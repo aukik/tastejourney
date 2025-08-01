@@ -1,0 +1,354 @@
+/* Animation for fade-in effect on question cards */
+.animate-fade-in {
+  animation: fadeIn 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@import "tailwindcss";
+
+@theme {
+  /* Inset utilities */
+  --inset-0: 0;
+  --inset-auto: auto;
+  
+  /* Modern color palette with better contrast and accessibility */
+  --color-background: oklch(0.99 0.005 106);
+  --color-foreground: oklch(0.15 0.02 258);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.15 0.02 258);
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.15 0.02 258);
+
+  /* Primary: Modern blue-purple gradient */
+  --color-primary: oklch(0.55 0.18 258);
+  --color-primary-foreground: oklch(0.98 0.01 258);
+
+  /* Secondary: Soft neutral */
+  --color-secondary: oklch(0.96 0.01 258);
+  --color-secondary-foreground: oklch(0.25 0.02 258);
+
+  /* Muted: Better readability */
+  --color-muted: oklch(0.95 0.01 258);
+  --color-muted-foreground: oklch(0.45 0.02 258);
+
+  /* Accent: Complementary orange */
+  --color-accent: oklch(0.92 0.02 45);
+  --color-accent-foreground: oklch(0.25 0.02 258);
+
+  /* Success: Modern green */
+  --color-success: oklch(0.55 0.15 142);
+  --color-success-foreground: oklch(0.98 0.01 142);
+
+  /* Warning: Warm orange */
+  --color-warning: oklch(0.65 0.15 45);
+  --color-warning-foreground: oklch(0.98 0.01 45);
+
+  /* Destructive: Modern red */
+  --color-destructive: oklch(0.55 0.18 15);
+  --color-destructive-foreground: oklch(0.98 0.01 15);
+
+  /* Borders and inputs */
+  --color-border: oklch(0.9 0.01 258);
+  --color-input: oklch(0.94 0.01 258);
+  --color-ring: oklch(0.55 0.18 258);
+
+  /* Enhanced radius for modern look */
+  --radius: 0.75rem;
+  --radius-sm: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* Positioning utilities for Tailwind CSS 4 */
+}
+
+.dark {
+  --color-background: oklch(0.08 0.01 258);
+  --color-foreground: oklch(0.95 0.01 258);
+  --color-card: oklch(0.12 0.01 258);
+  --color-card-foreground: oklch(0.95 0.01 258);
+  --color-popover: oklch(0.12 0.01 258);
+  --color-popover-foreground: oklch(0.95 0.01 258);
+
+  --color-primary: oklch(0.65 0.18 258);
+  --color-primary-foreground: oklch(0.08 0.01 258);
+
+  --color-secondary: oklch(0.18 0.01 258);
+  --color-secondary-foreground: oklch(0.95 0.01 258);
+
+  --color-muted: oklch(0.15 0.01 258);
+  --color-muted-foreground: oklch(0.65 0.02 258);
+
+  --color-accent: oklch(0.25 0.02 45);
+  --color-accent-foreground: oklch(0.95 0.01 258);
+
+  --color-success: oklch(0.65 0.15 142);
+  --color-success-foreground: oklch(0.08 0.01 142);
+
+  --color-warning: oklch(0.75 0.15 45);
+  --color-warning-foreground: oklch(0.08 0.01 45);
+
+  --color-destructive: oklch(0.65 0.18 15);
+  --color-destructive-foreground: oklch(0.08 0.01 15);
+
+  --color-border: oklch(0.2 0.01 258);
+  --color-input: oklch(0.18 0.01 258);
+  --color-ring: oklch(0.65 0.18 258);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Enhanced scrollbar styling */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full hover:bg-muted-foreground/50;
+    transition: background-color 0.2s ease;
+  }
+
+  /* Custom keyframe animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 20px oklch(0.55 0.18 258 / 0.3);
+    }
+    to {
+      box-shadow: 0 0 30px oklch(0.55 0.18 258 / 0.6);
+    }
+  }
+
+  @keyframes bounce-gentle {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  /* Focus states */
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    @apply outline-2 outline-primary outline-offset-2;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-primary/20 text-primary;
+  }
+
+  /* Smooth focus transitions */
+  button,
+  input,
+  select,
+  textarea {
+    @apply transition-all duration-200 ease-out;
+  }
+}
+
+@layer components {
+  /* Responsive breakpoint utilities */
+  .xs\:max-w-\[85\%\] {
+    @media (min-width: 360px) {
+      max-width: 85%;
+    }
+  }
+
+  /* Positioning utilities removed - using native Tailwind utilities */
+
+  /* Custom gradient backgrounds */
+  .gradient-bg {
+    background: linear-gradient(
+      135deg,
+      oklch(0.99 0.005 106) 0%,
+      oklch(0.97 0.01 258) 100%
+    );
+  }
+
+  .dark .gradient-bg {
+    background: linear-gradient(
+      135deg,
+      oklch(0.08 0.01 258) 0%,
+      oklch(0.06 0.01 258) 100%
+    );
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    @apply bg-background/80 backdrop-blur-xl border border-border/50;
+  }
+
+  /* Enhanced shadows */
+  .shadow-soft {
+    box-shadow: 0 2px 20px -2px oklch(0.55 0.18 258 / 0.1);
+  }
+
+  .dark .shadow-soft {
+    box-shadow: 0 2px 20px -2px oklch(0 0 0 / 0.3);
+  }
+
+  /* Modern Animations */
+  .animate-fade-in {
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  /* Grid pattern background */
+  .bg-grid-pattern {
+    background-image: 
+      linear-gradient(oklch(0.9 0.01 258 / 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(0.9 0.01 258 / 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .dark .bg-grid-pattern {
+    background-image: 
+      linear-gradient(oklch(0.2 0.01 258 / 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(0.2 0.01 258 / 0.3) 1px, transparent 1px);
+  }
+
+  /* Enhanced hover effects */
+  .hover-lift {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .hover-lift:hover {
+    @apply -translate-y-1 shadow-lg;
+  }
+
+  /* Pulse animation for loading states */
+  .pulse-ring {
+    @apply absolute rounded-full animate-ping;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent;
+  }
+
+  /* Hide scrollbar for horizontal scroll */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+  }
+
+  /* Modern card hover effects */
+  .recommendation-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .recommendation-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Smooth reveal animation */
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .slide-in-left {
+    animation: slideInLeft 0.5s ease-out forwards;
+  }
+
+  /* Gradient text animation */
+  .gradient-text {
+    background: linear-gradient(135deg, oklch(0.55 0.18 258), oklch(0.65 0.15 280));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}

@@ -531,32 +531,41 @@ const ChatInterface: React.FC = () => {
     setInputValue("");
     addMessage(userMessage, false);
 
-    await simulateTyping(() => {
-      if (userMessage.toLowerCase().includes("budget")) {
-        addMessage(
-          "I can help you with budget planning! Each recommendation includes detailed cost breakdowns for flights, accommodation, and daily expenses. Would you like me to adjust the recommendations based on a specific budget range?",
-          true
-        );
-      } else if (userMessage.toLowerCase().includes("collaboration")) {
-        addMessage(
-          "Great question about collaborations! I've identified local creators and brands in each destination. For example, in Bali, there are 150+ active travel creators and 20+ brands looking for partnerships. Would you like more details about specific collaboration opportunities?",
-          true
-        );
-      } else if (
-        userMessage.toLowerCase().includes("more") ||
-        userMessage.toLowerCase().includes("additional")
-      ) {
-        addMessage(
-          "I'd be happy to provide more recommendations! Based on your profile, I can suggest alternative destinations, seasonal opportunities, or niche markets. What specific aspect would you like me to explore further?",
-          true
-        );
+    setIsTyping(true);
+
+    try {
+      const response = await fetch("/api/gemini-chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          context: {
+            chatState,
+            websiteData,
+            recommendations: recommendations?.recommendations || [],
+            userAnswers,
+          },
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.message) {
+        setIsTyping(false);
+        addMessage(data.message, true);
       } else {
-        addMessage(
-          "That's a great point! Based on your website analysis and travel preferences, I can provide more specific guidance. Feel free to ask about budget planning, collaboration opportunities, seasonal considerations, or any other aspects of your travel content strategy.",
-          true
-        );
+        throw new Error(data.error || "Failed to get AI response");
       }
-    });
+    } catch (error) {
+      console.error("Error calling Gemini API:", error);
+      setIsTyping(false);
+      addMessage(
+        "I apologize, but I'm having trouble connecting to my AI service right now. Please try again in a moment.",
+        true
+      );
+    }
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {

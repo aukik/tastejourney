@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY ;
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
 interface WebsiteData {
   url: string;
@@ -67,25 +67,24 @@ interface GeminiResponse {
   }>;
 }
 
-// Enhanced system prompt for travel assistant
+// System prompt for travel assistant
 const getSystemPrompt = (context?: GeminiRequest['context']) => {
-  const basePrompt = `You are an expert AI travel companion specializing in content creator travel recommendations. You provide personalized, actionable advice for travel content creators looking to monetize their journeys.
+  let basePrompt = `You are an expert AI travel companion for content creators. Answer questions about travel recommendations, budget planning, collaboration opportunities, and content creation tips.
 
-Key capabilities:
-- Analyze travel preferences and content creation goals
-- Provide detailed destination recommendations
-- Suggest collaboration opportunities with brands
-- Offer budget breakdowns and optimization tips
-- Recommend best times to visit for content creation
-- Share engagement strategies for different destinations
-
-Always be enthusiastic, knowledgeable, and focus on practical advice that helps creators succeed.`;
+IMPORTANT: Keep responses very short and conversational. No markdown formatting. No bullet points. No lists. Just direct, helpful answers in 1-2 sentences maximum.`;
 
   if (context?.websiteData) {
-    return basePrompt + `\n\nUser Context:
+    basePrompt += `\n\nUser Context:
 - Website themes: ${context.websiteData.themes?.join(', ') || 'Not specified'}
-- Content type: ${context.websiteData.contentType || 'Not specified'}
-- User preferences: ${JSON.stringify(context.userAnswers || {})}`;
+- Content type: ${context.websiteData.contentType || 'Not specified'}`;
+    
+    if (context.userAnswers) {
+      basePrompt += `\n- User preferences: Budget: ${context.userAnswers.budget || 'Not specified'}, Duration: ${context.userAnswers.duration || 'Not specified'}, Style: ${context.userAnswers.style || 'Not specified'}`;
+    }
+    
+    if (context.recommendations && context.recommendations.length > 0) {
+      basePrompt += `\n- Current recommendations: ${context.recommendations.map((r: Recommendation) => r.destination).join(', ')}`;
+    }
   }
 
   return basePrompt;
@@ -114,11 +113,10 @@ export async function POST(request: NextRequest) {
     const fullPrompt = `${systemPrompt}\n\nUser Question: ${body.message}`;
 
     // Make request to Gemini API
-    const response = await fetch(GEMINI_API_URL, {
+    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-goog-api-key': GEMINI_API_KEY,
       },
       body: JSON.stringify({
         contents: [
